@@ -1,0 +1,46 @@
+form.upload {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: .5rem;
+    width: fit-content;
+    float: right;
+}
+
+.upload input {
+    display: none;
+}
+
+.upload-area label {
+    display: block;
+    max-width: 20rem;
+    max-height: 2.5rem;
+    width: 100%;
+    height: 100%;
+    background: var(--dark-color);
+    color: var(--text-color);
+    font-size: 1.2em;
+    line-height: 2.5rem;
+    cursor: pointer;
+    padding-inline: 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border-top-left-radius: .5rem;
+    border-bottom-left-radius: .5rem;
+}
+
+.upload button {
+    width: 5rem;
+    height: 2.5rem;
+    outline: none;
+    border: none;
+    border-top-right-radius: .5rem;
+    border-bottom-right-radius: .5rem;
+    background: var(--dark-color);
+    box-shadow: -2px 0 0 var(--background-color);
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 1em;
+    transition: var(--transition);
+}
