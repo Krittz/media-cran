@@ -7,6 +7,7 @@
 @import "images.css";
 @import "pagination.css";
 @import "notification.css";
+@import "insights.css";
 
 :root {
     --background-color: #18191D;

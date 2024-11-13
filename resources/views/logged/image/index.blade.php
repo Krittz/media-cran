@@ -10,7 +10,7 @@
 {{ route('upload.image') }}
 @endsection
 @section('input')
-<input type="file" name="image_upload" id="file" />
+<input type="file" name="image_upload" id="file" accept="image/png,image/jpeg,image/jpg,image/gif,image/bitmap" />
 @endsection
 
 @section('label_upload')
@@ -22,7 +22,7 @@ Upload Image
         <div class="orders">
             <div class="header">
                 <div class="header-left">
-                    <i class="ph ph-images"></i>
+                    <i class="ph ph-camera"></i>
                     <h3>Images</h3>
                 </div>
                 <div class="header-right">

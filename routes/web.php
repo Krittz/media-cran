@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
@@ -22,9 +23,8 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 // Rotas protegidas por autenticação
 Route::middleware(['auth'])->group(function () {
     // Rota principal
-    Route::get('/', function () {
-        return view('logged.home');
-    })->name('home');
+    Route::get('/', [MediaController::class, 'index'])->name('home');
+
 
     // Grupo de rotas para imagens
     Route::prefix('image')->group(function () {
@@ -45,6 +45,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('albums', AlbumController::class);
     Route::post('images/{$mediaId}/add-to-album', [ImageController::class, 'addToAlbum'])->name('images.addToAlbum');
+
+
+    Route::get('album', function () {
+        return view('logged.image.album');
+    })->name('album');
+
+    Route::get('collection', function () {
+        return view('logged.video.collection');
+    })->name('collection');
 });
 
 // Adicione uma rota de fallback para capturar URLs inválidas

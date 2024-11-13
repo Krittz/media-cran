@@ -22,7 +22,7 @@ Upload Video
         <div class="orders">
             <div class="header">
                 <div class="header-left">
-                    <i class="ph ph-video"></i>
+                    <i class="ph ph-video-camera"></i>
                     <h3>Videos</h3>
                 </div>
                 <div class="header-right">

@@ -13,14 +13,26 @@
         </li>
         <li class="{{ request()->routeIs('image') ? 'active' : '' }}">
             <a href="{{ route('image') }}">
-                <i class="ph ph-images"></i>
+                <i class="ph ph-camera"></i>
                 Image
+            </a>
+        </li>
+        <li class=" {{ request()->routeIs('album') ? 'active' : '' }}">
+            <a href="{{ route('album') }}">
+                <i class="ph ph-images"></i>
+                Album
             </a>
         </li>
         <li class="{{ request()->routeIs('video') ? 'active' : '' }}">
             <a href="{{ route('video') }}">
-                <i class="ph ph-film-reel"></i>
+                <i class="ph ph-video-camera"></i>
                 Video
+            </a>
+        </li>
+        <li class="{{ request()->routeIs('collection') ? 'active' : '' }}">
+            <a href="{{ route('collection') }}">
+                <i class="ph ph-film-strip"></i>
+                Collection
             </a>
         </li>
     </ul>

@@ -47,7 +47,33 @@
                 @endif
             </div>
             <div class="main-content">
+                @if(request()->routeIs('home'))
+                <ul class="insights">
+                    <li>
+                        <i class="ph ph-stack"></i>
+                        <span class="info">
+                            <h3>{{ $totalFiles }}</h3>
+                            <p>Total Files</p>
+                        </span>
+                    </li>
+                    <li>
+                        <i class="ph ph-camera"></i>
+                        <span class="info">
+                            <h3>{{ $totalImages }}</h3>
+                            <p>Images Uploaded</p>
+                        </span>
+                    </li>
+                    <li>
+                        <i class="ph ph-video-camera"></i>
+                        <span class="info">
+                            <h3>{{ $totalVideos }}</h3>
+                            <p>Videos Uploaded</p>
+                        </span>
+                    </li>
+                </ul>
+                @endif
                 @yield('content')
+
             </div>
         </main>
     </div>
