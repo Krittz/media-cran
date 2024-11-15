@@ -35,6 +35,12 @@
                 Collection
             </a>
         </li>
+        <li class="{{ request()->routeIs('audio') ? 'active' : '' }}">
+            <a href="{{ route('audio') }}">
+                <i class="ph ph-vinyl-record"></i>
+                Audio
+            </a>
+        </li>
     </ul>
     <form action="{{ route('logout') }}" method="POST" class="logout">
         @csrf

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\AudioController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\UserController;
@@ -42,7 +43,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{mediaId}', [VideoController::class, 'show'])->name('videos.show');
     });
 
-
+    Route::prefix('audio')->group(function () {
+        Route::get('/', [AudioController::class, 'index'])->name('audio');
+        Route::post('/', [AudioController::class, 'store'])->name('upload.audio');
+        Route::get('/{mediaId}', [AudioController::class, 'show'])->name('audios.show');
+    });
     Route::resource('albums', AlbumController::class);
     Route::post('images/{$mediaId}/add-to-album', [ImageController::class, 'addToAlbum'])->name('images.addToAlbum');
 

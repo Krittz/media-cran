@@ -8,7 +8,7 @@
 }
 
 .all-data>div {
-    border-radius: 20px;
+    border-radius: 7px;
     padding: 24px;
     overflow-x: auto;
     background: var(--dark-color);
@@ -157,7 +157,8 @@
 }
 
 .orders table td img,
-.orders table td video {
+.orders table td video,
+.orders table td audio {
     width: 45px;
     height: 45px;
     border-radius: 7px;
@@ -171,6 +172,14 @@
     display: flex;
     justify-content: start;
     align-items: center;
+}
+
+.orders .media-view i {
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    line-height: 45px;
+
 }
 
 .orders .media-view span {
@@ -458,4 +467,3 @@ body.modal-open {
         padding: 0;
     }
 }
-

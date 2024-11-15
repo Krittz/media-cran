@@ -113,36 +113,29 @@ Upload Video
                     </tr>
                     @endforeach
                 </tbody>
+                <tfoot>
+                    <tr>
+
+                        @if ($videos->hasPages())
+                        <div class="pagination">
+
+                            {{-- Pagination Elements --}}
+                            @foreach ($videos->getUrlRange(1, $videos->lastPage()) as $page => $url)
+                            @if ($page == $videos->currentPage())
+                            <span class="pagination-item active">{{ $page }}</span>
+                            @else
+                            <a href="{{ $videos->appends(request()->except('page'))->url($page) }}" class="pagination-item">{{ $page }}</a>
+                            @endif
+                            @endforeach
+
+                        </div>
+                        @endif
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
 
-    @if ($videos->hasPages())
-    <div class="pagination">
-        {{-- Previous Page Link --}}
-        @if ($videos->onFirstPage())
-        <span class="pagination-item disabled">&laquo;</span>
-        @else
-        <a href="{{ $videos->appends(request()->except('page'))->previousPageUrl() }}" class="pagination-item">&laquo;</a>
-        @endif
-
-        {{-- Pagination Elements --}}
-        @foreach ($videos->getUrlRange(1, $videos->lastPage()) as $page => $url)
-        @if ($page == $videos->currentPage())
-        <span class="pagination-item active">{{ $page }}</span>
-        @else
-        <a href="{{ $videos->appends(request()->except('page'))->url($page) }}" class="pagination-item">{{ $page }}</a>
-        @endif
-        @endforeach
-
-        {{-- Next Page Link --}}
-        @if ($videos->hasMorePages())
-        <a href="{{ $videos->appends(request()->except('page'))->nextPageUrl() }}" class="pagination-item">&raquo;</a>
-        @else
-        <span class="pagination-item disabled">&raquo;</span>
-        @endif
-    </div>
-    @endif
 </div>
 
 
