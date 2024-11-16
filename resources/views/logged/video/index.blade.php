@@ -159,8 +159,6 @@ Upload Video
                 <span id="current-time"> 00:00</span><i class="ph ph-line-vertical"></i><span id="total-duration">00:00</span>
                 <button id="resize"><i class="ph ph-corners-out"></i></button>
                 <!-- Minute area destination -->
-
-
             </div>
         </div>
     </div>

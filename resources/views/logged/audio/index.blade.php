@@ -81,12 +81,9 @@ Upload audio
                             </div>
                         </td>
                         <td class="media-view">
-                            <audio>
-                                <source src="{{ route('audios.show', $audio->id) }}" type="{{ $audio->file_type}} ">
-                                Your browser does not support the audio tag.
-                            </audio>
-                            <i class="ph ph-vinyl-record"></i>
-                            <span onclick="openAudioModal(this)" data-audio-url="{{ route('audios.show', $audio->id) }}"><i class="ph ph-play"></i></span>
+                            <i class="ph ph-music-notes-simple"></i>
+                            <span data-audio-url="{{ route('audios.show', $audio->id) }}"
+                                onclick="openAudioModal(this)"><i class="ph ph-play"></i></span>
                         </td>
                         <td>
                             <p>{{ $audio->filename }}</p>
@@ -138,4 +135,265 @@ Upload audio
     </div>
 </div>
 
+
+<div class="audio-modal" id="audio-modal">
+    <div class="audio-player">
+        <span class="modal-close" onclick="closeAudioModal()"><i class="ph ph-x-square"></i></span>
+
+        <div class="custom-player">
+            <audio id="audio-player">
+                <source src="" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+
+            <div class="player-controls">
+                <button id="prevBtn" class="control-btn"><i class="ph ph-rewind"></i></button>
+                <button id="playBtn" class="control-btn"><i class="ph ph-play"></i></button>
+                <button id="nextBtn" class="control-btn"><i class="ph ph-fast-forward"></i></button>
+                <div class="volume-control">
+                    <button id="muteBtn" class="control-btn"><i class="ph ph-speaker-high"></i></button>
+                    <input type="range" class="volume-slider" min="0" max="100" value="100">
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <div class="time-labels">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .audio-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 3001;
+        backdrop-filter: blur(10px);
+    }
+
+    .audio-player {
+        background: var(--background-color);
+        border-radius: 7px;
+        padding: 20px;
+        width: 400px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 1.5em;
+        color: #666;
+    }
+
+    .custom-player {
+        padding: 20px;
+    }
+
+    .player-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .control-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        transition: var(--transition);
+    }
+
+    .control-btn:hover {
+        background-color: var(--background-color);
+    }
+
+    .control-btn i {
+        font-size: 1.2em;
+        color: var(--primary-color);
+    }
+
+    .volume-control {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-left: 15px;
+    }
+
+    .volume-slider {
+        width: 80px;
+        height: 5px;
+        -webkit-appearance: none;
+        background: var(--primary-color);
+        border-radius: 5px;
+        outline: none;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 12px;
+        height: 12px;
+        background: var(--primary-color);
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .progress-container {
+        width: 100%;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 5px;
+        background: var(--text-color);
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 8px;
+        overflow: hidden;
+    }
+
+    .progress {
+        width: 0%;
+        height: 100%;
+        background: var(--primary-color);
+        border-radius: 5px;
+        transition: width 0.1s linear;
+    }
+
+    .time-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--text-color);
+    }
+
+    .show {
+        display: flex !important;
+    }
+</style>
+
+<script>
+    function openAudioModal(element) {
+        const modal = document.getElementById('audio-modal');
+        const audioPlayer = document.getElementById('audio-player');
+        const source = audioPlayer.querySelector('source');
+        const playBtn = document.getElementById('playBtn');
+
+        modal.style.display = 'flex';
+        modal.classList.add('show');
+        source.src = element.getAttribute('data-audio-url');
+        source.type = "audio/mpeg";
+        audioPlayer.load();
+
+        initializeAudioPlayer();
+    }
+
+    function closeAudioModal() {
+        const modal = document.getElementById('audio-modal');
+        const audioPlayer = document.getElementById('audio-player');
+
+        audioPlayer.pause();
+        modal.style.display = 'none';
+        modal.classList.remove('show');
+    }
+
+    function initializeAudioPlayer() {
+        const audio = document.getElementById('audio-player');
+        const playBtn = document.getElementById('playBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const muteBtn = document.getElementById('muteBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progress = document.getElementById('progress');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const volumeSlider = document.querySelector('.volume-slider');
+
+        // Play/Pause
+        playBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerHTML = '<i class="ph ph-pause"></i>';
+            } else {
+                audio.pause();
+                playBtn.innerHTML = '<i class="ph ph-play"></i>';
+            }
+        });
+
+        // Update progress bar
+        audio.addEventListener('timeupdate', () => {
+            const progressPercent = (audio.currentTime / audio.duration) * 100;
+            progress.style.width = `${progressPercent}%`;
+
+            const minutes = Math.floor(audio.currentTime / 60);
+            const seconds = Math.floor(audio.currentTime % 60);
+            currentTimeEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        });
+
+        // Update duration
+        audio.addEventListener('loadedmetadata', () => {
+            const minutes = Math.floor(audio.duration / 60);
+            const seconds = Math.floor(audio.duration % 60);
+            durationEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        });
+
+        // Click on progress bar
+        progressBar.addEventListener('click', (e) => {
+            const width = progressBar.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audio.duration;
+
+            audio.currentTime = (clickX / width) * duration;
+        });
+
+        // Volume control
+        volumeSlider.addEventListener('input', (e) => {
+            const volume = e.target.value / 100;
+            audio.volume = volume;
+            muteBtn.innerHTML = volume === 0 ?
+                '<i class="ph ph-speaker-none"></i>' :
+                '<i class="ph ph-speaker-high"></i>';
+        });
+
+        // Mute button
+        muteBtn.addEventListener('click', () => {
+            if (audio.volume > 0) {
+                audio.volume = 0;
+                volumeSlider.value = 0;
+                muteBtn.innerHTML = '<i class="ph ph-speaker-none"></i>';
+            } else {
+                audio.volume = 1;
+                volumeSlider.value = 100;
+                muteBtn.innerHTML = '<i class="ph ph-speaker-high"></i>';
+            }
+        });
+
+        // Previous and Next buttons (reset/end)
+        prevBtn.addEventListener('click', () => {
+            audio.currentTime = 0;
+        });
+
+        nextBtn.addEventListener('click', () => {
+            audio.currentTime = audio.duration;
+        });
+    }
+</script>
 @endsection
