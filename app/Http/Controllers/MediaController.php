@@ -18,7 +18,8 @@ class MediaController extends Controller
         // Contagem de arquivos de tipo 'video/%' onde active = true
         $totalVideos = Media::where('file_type', 'LIKE', 'video/%')->count();
 
+        $totalAudios = Media::where('file_type', 'LIKE', 'audio/%')->count();
         // Passa as contagens para a view 'logged.home'
-        return view('logged.home', compact('totalFiles', 'totalImages', 'totalVideos'));
+        return view('logged.home', compact('totalFiles', 'totalImages', 'totalVideos', 'totalAudios'));
     }
 }

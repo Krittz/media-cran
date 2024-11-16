@@ -70,6 +70,13 @@
                             <p>Videos Uploaded</p>
                         </span>
                     </li>
+                    <li>
+                        <i class="ph ph-vinyl-record"></i>
+                        <span class="info">
+                            <h3>{{ $totalAudios }}</h3>
+                            <p>Audios Uploaded</p>
+                        </span>
+                    </li>
                 </ul>
                 @endif
                 @yield('content')
